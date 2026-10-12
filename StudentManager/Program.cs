@@ -1,9 +1,5 @@
-﻿using ProgramacionOrientadaO.Data;
-using ProgramacionOrientadaO.Models;
-using System.Text.Json;
-/* TODO: Al iniciar sesión, el programa detecta si sos estudiante o profesor.
-* Según el valor que tenga asignado el  en el rol que tengas te ofrece un menú diferente de opciones.
-*/
+﻿using StudentManager.Data;
+using StudentManager.Models;
 
 Session Session = new Session();
 List<User> UserSession = new List<User>();
@@ -17,8 +13,8 @@ string StringConnection = "Host=localhost;" +
 
 
 
-string? UserOption = Session.MainMenu(StringConnection);
-while (UserOption != null)
+string UserOption = Session.MainMenu(StringConnection);
+while (UserOption != "0")
 {
     //MENÚ PRINCIPAL POR DEFECTO
     switch (UserOption)
@@ -28,7 +24,16 @@ while (UserOption != null)
             while (CurrentUser == null)
             {
                 Console.WriteLine("Ingrese su número de documento: ");
-                int Ndocument = Convert.ToInt32(Console.ReadLine());
+                int Ndocument;
+                try
+                {
+                    Ndocument = Convert.ToInt32(Console.ReadLine());
+
+                }catch(FormatException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Ndocument = 0;
+                }
                 Console.Write("Ingrese su contraseña: ");
                 string Spassword = Console.ReadLine();
 
@@ -88,19 +93,29 @@ while (UserOption != null)
                         Console.WriteLine("-------------------------------");
                         UserOption = Session.ContextualMenu(CurrentUser);
                         break;
+
                     case "3":
                         {
                             if (CurrentUser is Professor professor) //Si es PROFESOR cargar calificaciones a alumno
                             {
-                                string NextNote = "si";
+                                string NextNote = "si", Subject = "";
+                                int Note, Document;
                                 while (NextNote == "si")
                                 {
                                     Console.WriteLine("Ingrese el número de documento del alumno: ");
-                                    int Document = Convert.ToInt32(Console.ReadLine());
-                                    Console.Write("Ingrese el nombre de la materia a la que corresponde la calificación: ");
-                                    string Subject = Console.ReadLine();
-                                    Console.WriteLine("Ingrese la nota: ");
-                                    int Note = Convert.ToInt32(Console.ReadLine());
+                                    try
+                                    {
+                                        Document = Convert.ToInt32(Console.ReadLine());
+                                        Console.Write("Ingrese el nombre de la materia a la que corresponde la calificación: ");
+                                        Subject = Console.ReadLine();
+                                        Console.WriteLine("Ingrese la nota: ");
+                                        Note = Convert.ToInt32(Console.ReadLine());
+
+                                    }catch(FormatException e)
+                                    {
+                                        Note = 0;
+                                        Document = 0;
+                                    }
                                     while (Note < 1 || Note > 10)
                                     {
                                         Console.WriteLine("La calificación no puede ser menor a 1 o mayor a 10");
@@ -128,7 +143,7 @@ while (UserOption != null)
                         }
                         
                         break;
-                    case "4": //TODO: EL ESTUDIANTE TIENE QUE INSCRIBIRSE A MATERIA 
+                    case "4":  
                         {
                             if (CurrentUser is Professor Professor)
                             {
@@ -175,7 +190,7 @@ while (UserOption != null)
                 }
                 Console.WriteLine("--------------------------");
             }
-            UserOption = null;
+            UserOption = "0";
             break;
 
         default:

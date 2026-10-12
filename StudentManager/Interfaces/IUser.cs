@@ -10,7 +10,5 @@ namespace ProgramacionOrientadaO.Interfaces
     {
 
 
-        void ConsultNotes(); //TODO: cambiar para que devuelva una lista/objeto con las notas
-        
     }
 }

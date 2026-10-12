@@ -1,38 +1,16 @@
 ﻿using Npgsql;
-using ProgramacionOrientadaO.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ProgramacionOrientadaO.Models
+namespace StudentManager.Models
 {
-    internal class User : IUser
+    internal class User
     {
+        public int IdUser { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
         public DateOnly DateOfBirth { get; set; }
         public string Role { get; set; }
         public int Age { get; set; }
         public int Document { get; set; }
-
-
-        /*public User(string Name, string Password, DateOnly Dob, string Role, int Age, int NDocument)
-        {
-            this.Name = Name;
-            this.Password = Password;
-            this.DateOfBirth = Dob;
-            this.Role = Role;
-            this.Age = Age;
-            this.Document = NDocument;
-        }*/
-
-
-        public void ConsultNotes()
-        {
-            Console.WriteLine("Devolver notas"); 
-        }
 
         public int GetSubject(string StringConnection, string SubjectName)
         {
@@ -50,7 +28,8 @@ namespace ProgramacionOrientadaO.Models
             {
                 IdSubject = Reader.GetInt32(0);
             }
-            
+            Connection.Close();
+
             return IdSubject;
         }
         //SetAge -> calcular edad

@@ -1,12 +1,12 @@
 ﻿using Npgsql;
-using ProgramacionOrientadaO.Models;
-using System.Security.Cryptography.X509Certificates;
+using StudentManager.Models;
 
 namespace ProgramacionOrientadaO.Data
 {
     internal class Session
     {
-        public string? MainMenu(string StringConnection)
+        private bool Semester = false;
+        public string MainMenu(string StringConnection)
         {
             Console.WriteLine("BIENVENIDO AL CAMPUS ACADÉMICO");
             Console.WriteLine("| Ingreso al campus  - Menú principal|");
@@ -15,7 +15,8 @@ namespace ProgramacionOrientadaO.Data
             Console.WriteLine("1) Iniciar sesión.");
             Console.WriteLine("2) Registrarse.");
             Console.WriteLine("3) Salir.");
-            string? UserChoice = Console.ReadLine();
+            string UserChoice = Console.ReadLine();
+            if (UserChoice == null) UserChoice = "4";
             return UserChoice;
         }
 
@@ -48,6 +49,7 @@ namespace ProgramacionOrientadaO.Data
                     Console.WriteLine("Inicio de sesión exitoso.");
                     Console.WriteLine("Usuario : " + Professor.Name);
                     Console.WriteLine("Rol: " + Professor.Role);
+                    Connection.Close();
                     return Professor;
                 }
                 else
@@ -65,10 +67,12 @@ namespace ProgramacionOrientadaO.Data
                         Console.WriteLine("Inicio de sesión exitoso.");
                         Console.WriteLine("Usuario : " + Student.Name);
                         Console.WriteLine("Rol: " + Student.Role);
+                        Connection.Close();
                         return Student;
                     }
                 }                 
             }
+            Connection.Close();
             return null;
         }
 
@@ -163,6 +167,14 @@ namespace ProgramacionOrientadaO.Data
             Console.WriteLine("Registro creado con éxito!");
         }
 
-        
+        public void StartSemester()
+        {
+            this.Semester = true;
+        }
+
+        public void EndSemester()
+        {
+            this.Semester = false;
+        }
     }
 }

@@ -1,11 +1,5 @@
 ﻿using Npgsql;
-using ProgramacionOrientadaO.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using StudentManager.Interfaces;
 
 namespace ProgramacionOrientadaO.Models
 {
@@ -30,6 +24,7 @@ namespace ProgramacionOrientadaO.Models
             {
                 IdStudent = Reader.GetInt32(0);
             }
+            Connection.Close();
             return IdStudent;
         }
         public void PutNotes(string StringConnection, int Ndocument, int Note, string Subject) //Registra notas de cada alumno en la DB
@@ -52,6 +47,7 @@ namespace ProgramacionOrientadaO.Models
             int RowsAffected = Command.ExecuteNonQuery();
 
             if (RowsAffected == 1) Console.WriteLine("Se insertó " + RowsAffected + " nota.");
+            Connection.Close();
         }
 
         public void ShowGrade(string StringConnection, int GradeNumber) //TODO: query
@@ -74,6 +70,7 @@ namespace ProgramacionOrientadaO.Models
                 Console.WriteLine(Reader.GetString(0));
                 Console.WriteLine("--------------------");
             }
+            Connection.Close();
         }
 
         public void NotePerStudent(string StringConnection, int Document)
