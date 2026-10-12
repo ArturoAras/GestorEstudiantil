@@ -1,32 +1,49 @@
-#Student Manager
+# Student Manager
 
-Console application to manage students and personal. Built with C# and .NET
+Console application to manage students and staff, built with C# and .NET.
 
-##FEATURES
+## Features
 
-As a user you can take three main roles: Director, Professor or Student.
+Users can take one of three roles: Director, Professor or Student.
 
- - As a Director, you can open or close the semester and register new professors based on the list of users.
+- **Director:** opens or closes the semester and registers new professors from the list of users.
+- **Professor:** records grades for students and searches their history.
+- **Student:** enrolls in subjects and consults their grade history.
+- All operations are stored in a PostgreSQL database.
 
- - As a Professor, you can put notes to students and search students history.
+## Tech stack
 
- - As a Student, you can sign in new subjects and consult your notes history.
+- C#
+- .NET 9.0
+- Npgsql 10.0.3
+- PostgreSQL
 
- - All movements are saved in a PostgreSQL DB.
+## Getting started
 
+### Requirements
 
-##Tech Stack
+- .NET SDK 9.0
+- PostgreSQL <versión>
 
- - C#
- - .NET 9.0
- - Npgsql 10.0.3
+### Setup
 
+<pasos para crear la base de datos y configurar la cadena de conexión>
 
-###Status
-	- In progress. Next steps
-		- A Subject class, where it saves the duration and the minimum notes per student.
-		- Semester validation: if the semester is closed, no one can save notes, register subjects or any other movement.
+### Run
 
-#Author
-	**Arturo Ariel Aras**
-	**www.linkedin.com/in/arturo-aras**
+```bash
+git clone https://github.com/ArturoAras/<repository-name>.git
+cd <repository-name>
+dotnet run
+```
+
+## Status
+
+In progress. Next steps:
+
+- Add a `Subject` class that stores the duration and the minimum number of grades per student.
+- Add semester validation: when the semester is closed, no grades, enrollments or other operations can be saved.
+
+## Author
+
+**Arturo Ariel Aras** - [LinkedIn](https://www.linkedin.com/in/arturo-aras)
