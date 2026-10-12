@@ -23,17 +23,13 @@ Users can take one of three roles: Director, Professor or Student.
 ### Requirements
 
 - .NET SDK 9.0
-- PostgreSQL <versión>
 
-### Setup
-
-<pasos para crear la base de datos y configurar la cadena de conexión>
 
 ### Run
 
 ```bash
 git clone https://github.com/ArturoAras/<repository-name>.git
-cd <repository-name>
+cd <StudentManager>
 dotnet run
 ```
 
