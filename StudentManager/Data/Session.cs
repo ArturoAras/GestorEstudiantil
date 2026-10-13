@@ -1,7 +1,7 @@
 ﻿using Npgsql;
 using StudentManager.Models;
 
-namespace ProgramacionOrientadaO.Data
+namespace StudentManager.Data
 {
     internal class Session
     {

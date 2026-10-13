@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProgramacionOrientadaO.Interfaces
+namespace StudentManager.Interfaces
 {
     internal interface IUser
     {

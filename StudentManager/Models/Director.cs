@@ -1,7 +1,7 @@
 ﻿using Npgsql;
 using StudentManager.Data;
 
-namespace ProgramacionOrientadaO.Models
+namespace StudentManager.Models
 {
     internal class Director : User
     {

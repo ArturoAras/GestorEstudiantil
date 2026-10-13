@@ -1,7 +1,7 @@
 ﻿using Npgsql;
 using StudentManager.Interfaces;
 
-namespace ProgramacionOrientadaO.Models
+namespace StudentManager.Models
 {
     internal class Professor : User, IProfessor
     {
