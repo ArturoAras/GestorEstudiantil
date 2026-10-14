@@ -24,20 +24,20 @@ while (userOption != "0")
             while (currentUser == null)
             {
                 Console.WriteLine("Ingrese su número de documento: ");
-                int nDocument;
+                int document;
                 try
                 {
-                    nDocument = Convert.ToInt32(Console.ReadLine());
+                    document = Convert.ToInt32(Console.ReadLine());
 
                 }catch(FormatException e)
                 {
                     Console.WriteLine(e.Message);
-                    nDocument = 0;
+                    document = 0;
                 }
                 Console.Write("Ingrese su contraseña: ");
                 string sPassword = Console.ReadLine();
 
-                currentUser = session.LogInValidation(stringConnection, nDocument, sPassword);
+                currentUser = session.LogInValidation(stringConnection, document, sPassword);
 
                 if(currentUser == null) Console.WriteLine("Usuario y/o contraseña incorrectos.");
             }
