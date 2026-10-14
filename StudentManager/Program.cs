@@ -1,11 +1,11 @@
 ﻿using StudentManager.Data;
 using StudentManager.Models;
 
-Session Session = new Session();
-List<User> UserSession = new List<User>();
-User? CurrentUser = null;
+Session session = new Session();
+List<User> userSession = new List<User>();
+User? currentUser = null;
 
-string StringConnection = "Host=localhost;" +
+string stringConnection = "Host=localhost;" +
                                   "Database=campus_academic_db;" +
                                   "Port=5432;" +
                                   "Username=postgres;" +
@@ -13,153 +13,153 @@ string StringConnection = "Host=localhost;" +
 
 
 
-string UserOption = Session.MainMenu(StringConnection);
-while (UserOption != "0")
+string userOption = session.MainMenu(stringConnection);
+while (userOption != "0")
 {
     //MENÚ PRINCIPAL POR DEFECTO
-    switch (UserOption)
+    switch (userOption)
     {
         case "1":
             //Valida que se haya iniciado sesión correctamente
-            while (CurrentUser == null)
+            while (currentUser == null)
             {
                 Console.WriteLine("Ingrese su número de documento: ");
-                int Ndocument;
+                int nDocument;
                 try
                 {
-                    Ndocument = Convert.ToInt32(Console.ReadLine());
+                    nDocument = Convert.ToInt32(Console.ReadLine());
 
                 }catch(FormatException e)
                 {
                     Console.WriteLine(e.Message);
-                    Ndocument = 0;
+                    nDocument = 0;
                 }
                 Console.Write("Ingrese su contraseña: ");
-                string Spassword = Console.ReadLine();
+                string sPassword = Console.ReadLine();
 
-                CurrentUser = Session.LogInValidation(StringConnection, Ndocument, Spassword);
+                currentUser = session.LogInValidation(stringConnection, nDocument, sPassword);
 
-                if(CurrentUser == null) Console.WriteLine("Usuario y/o contraseña incorrectos.");
+                if(currentUser == null) Console.WriteLine("Usuario y/o contraseña incorrectos.");
             }
 
-            UserSession.Add(CurrentUser);
-            UserOption = Session.ContextualMenu(CurrentUser);
+            userSession.Add(currentUser);
+            userOption = session.ContextualMenu(currentUser);
 
 
             //MENÚ CONTEXTUAL DE USUARIO
-            while (UserOption != "0")
+            while (userOption != "0")
             {
-                switch (UserOption)
+                switch (userOption)
                 {
                     case "1":
                         {
-                            if (CurrentUser is Professor professor) //Si es profesor devuelve curso por #
+                            if (currentUser is Professor professor) //Si es profesor devuelve curso por #
                             {
                                 Console.WriteLine("¿Qué curso desea ver?");
-                                int Grade = Convert.ToInt32(Console.ReadLine());
+                                int grade = Convert.ToInt32(Console.ReadLine());
 
-                                professor.ShowGrade(StringConnection, Grade);
+                                professor.ShowGrade(stringConnection, grade);
                             }
 
-                            if (CurrentUser is Student student) //Si es estudiante devuelve calificaciones 
+                            if (currentUser is Student student) //Si es estudiante devuelve calificaciones 
                             {
-                                student.ShowNotes(StringConnection);
+                                student.ShowNotes(stringConnection);
                             }
                             Console.WriteLine("-------------------------------");
                             Console.WriteLine("Qué otra acción desea realizar?");
                             Console.WriteLine("-------------------------------");
-                            UserOption = Session.ContextualMenu(CurrentUser);
+                            userOption = session.ContextualMenu(currentUser);
                             break;
                         }
 
                     case "2":
                         {
                             //Si es PROFESOR ver calificaciones del curso
-                            if (CurrentUser is Professor Professor)
+                            if (currentUser is Professor professor)
                             {
                                 Console.WriteLine("Ingrese el número de documento del estudiante: ");
-                                int Document = Convert.ToInt32(Console.ReadLine());
-                                Professor.NotePerStudent(StringConnection, Document);
+                                int document = Convert.ToInt32(Console.ReadLine());
+                                professor.NotePerStudent(stringConnection, document);
                             }
                             //Si es ALUMNO ver asignaturas del alumno
-                            if (CurrentUser is Student Student)
+                            if (currentUser is Student student)
                             {
-                                Student.ShowAsignature(StringConnection);
+                                student.ShowAsignature(stringConnection);
                             }
                         }
 
                         Console.WriteLine("-------------------------------");
                         Console.WriteLine("Qué otra acción desea realizar?");
                         Console.WriteLine("-------------------------------");
-                        UserOption = Session.ContextualMenu(CurrentUser);
+                        userOption = session.ContextualMenu(currentUser);
                         break;
 
                     case "3":
                         {
-                            if (CurrentUser is Professor professor) //Si es PROFESOR cargar calificaciones a alumno
+                            if (currentUser is Professor professor) //Si es PROFESOR cargar calificaciones a alumno
                             {
-                                string NextNote = "si", Subject = "";
-                                int Note, Document;
-                                while (NextNote == "si")
+                                string nextNote = "si", subject = "";
+                                int note, document;
+                                while (nextNote == "si")
                                 {
                                     Console.WriteLine("Ingrese el número de documento del alumno: ");
                                     try
                                     {
-                                        Document = Convert.ToInt32(Console.ReadLine());
+                                        document = Convert.ToInt32(Console.ReadLine());
                                         Console.Write("Ingrese el nombre de la materia a la que corresponde la calificación: ");
-                                        Subject = Console.ReadLine();
+                                        subject = Console.ReadLine();
                                         Console.WriteLine("Ingrese la nota: ");
-                                        Note = Convert.ToInt32(Console.ReadLine());
+                                        note = Convert.ToInt32(Console.ReadLine());
 
                                     }catch(FormatException e)
                                     {
-                                        Note = 0;
-                                        Document = 0;
+                                        note = 0;
+                                        document = 0;
                                     }
-                                    while (Note < 1 || Note > 10)
+                                    while (note < 1 || note > 10)
                                     {
                                         Console.WriteLine("La calificación no puede ser menor a 1 o mayor a 10");
                                         Console.WriteLine("Ingrese la calificación: ");
-                                        Note = Convert.ToInt32(Console.ReadLine());
+                                        note = Convert.ToInt32(Console.ReadLine());
                                     }
 
-                                    professor.PutNotes(StringConnection, Document, Note, Subject);
+                                    professor.PutNotes(stringConnection, document, note, subject);
 
                                     Console.WriteLine("Desea ingresar otra calificación? ");
-                                    NextNote = Console.ReadLine().ToLower();
+                                    nextNote = Console.ReadLine().ToLower();
                                 }
 
                                 Console.WriteLine("-------------------------------");
                                 Console.WriteLine("Qué otra acción desea realizar?");
                                 Console.WriteLine("-------------------------------");
-                                UserOption = Session.ContextualMenu(CurrentUser);
+                                userOption = session.ContextualMenu(currentUser);
                             }
 
-                            if (CurrentUser is Student) //Si es ALUMNO sale del menú contextual
+                            if (currentUser is Student) //Si es ALUMNO sale del menú contextual
                             {
                                 Console.WriteLine("Sesión finalizada");
-                                UserOption = "0";
+                                userOption = "0";
                             }
                         }
                         
                         break;
                     case "4":  
                         {
-                            if (CurrentUser is Professor Professor)
+                            if (currentUser is Professor)
                             {
                                 Console.WriteLine("Sesión finalizada");
-                                UserOption = "0";
+                                userOption = "0";
                             }
                             else
                             {
                                 Console.WriteLine("Opción del menú no disponible.");
-                                UserOption = Session.ContextualMenu(CurrentUser);
+                                userOption = session.ContextualMenu(currentUser);
                             }
                         }
                         break;
                     default:
                         Console.WriteLine("Opción no válida. Sesión finalizada.");
-                        UserOption = "3";
+                        userOption = "3";
                         break;
                 }
             }
@@ -170,41 +170,40 @@ while (UserOption != "0")
 
             Console.WriteLine("FORMULARIO DE REGISTRO - CAMPUS ACADÉMICO");
             Console.WriteLine("-----------------------------------------");
-            int NDocument = Session.SignUpValidation(StringConnection);//Valida que el documento no haya sido registrado anteriormente
-            Session.SignUpUser(StringConnection, NDocument);//Graba la información en la DB
-            UserOption = Session.MainMenu(StringConnection); //Luego del registro arroja el menú nuevamente
+            int nDocument = session.SignUpValidation(stringConnection);//Valida que el documento no haya sido registrado anteriormente
+            session.SignUpUser(stringConnection, nDocument);//Graba la información en la DB
+            userOption = session.MainMenu(stringConnection); //Luego del registro arroja el menú nuevamente
             break;
 
         case "3":
             Console.WriteLine("Gracias por utilizar nuestra plataforma");
-            Console.WriteLine("Cantidad de usuarios que accedieron durante la sesión: " + UserSession.Count());
-            if (UserSession.Count() > 0)
+            Console.WriteLine("Cantidad de usuarios que accedieron durante la sesión: " + userSession.Count());
+            if (userSession.Count() > 0)
             {
                 Console.WriteLine("Detalles de los usuarios:");
                 Console.WriteLine("--------------------------");
                 Console.WriteLine("   USUARIO   |     ROL     ");
                 Console.WriteLine("--------------------------");
-                for (int i = 0; i < UserSession.Count(); i++)
+                for (int i = 0; i < userSession.Count(); i++)
                 {
-                    Console.WriteLine(UserSession[i].Name + " | " + UserSession[i].Role);
+                    Console.WriteLine(userSession[i].Name + " | " + userSession[i].Role);
                 }
                 Console.WriteLine("--------------------------");
             }
-            UserOption = "0";
+            userOption = "0";
             break;
 
         default:
-            if(UserOption == "0" && CurrentUser != null)
+            if(userOption == "0" && currentUser != null)
             {
-                UserOption = Session.MainMenu(StringConnection);
-                CurrentUser = null;
+                userOption = session.MainMenu(stringConnection);
+                currentUser = null;
             }
             else
             {
                 Console.WriteLine("No se ingresó una opción correcta.");
-                UserOption = Session.MainMenu(StringConnection);
+                userOption = session.MainMenu(stringConnection);
             }
             break;
     }
-    //if (UserOption == "0") Session.MainMenu(StringConnection);
 }

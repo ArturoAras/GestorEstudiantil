@@ -12,25 +12,25 @@ namespace StudentManager.Models
         public int Age { get; set; }
         public int Document { get; set; }
 
-        public int GetSubject(string StringConnection, string SubjectName)
+        public int GetSubject(string stringconnection, string subjectName)
         {
-            NpgsqlConnection Connection = new NpgsqlConnection(StringConnection);
+            NpgsqlConnection connection = new NpgsqlConnection(stringconnection);
             string query = "SELECT * FROM subject " +
                             "WHERE s_name = @name";
 
-            NpgsqlCommand Command = new NpgsqlCommand(query, Connection);
-            Command.Parameters.AddWithValue("@name", SubjectName);
-            Connection.Open();
+            NpgsqlCommand command = new NpgsqlCommand(query, connection);
+            command.Parameters.AddWithValue("@name", subjectName);
+            connection.Open();
 
-            var Reader = Command.ExecuteReader();
-            int IdSubject = 0;
-            while (Reader.Read())
+            var reader = command.ExecuteReader();
+            int idSubject = 0;
+            while (reader.Read())
             {
-                IdSubject = Reader.GetInt32(0);
+                idSubject = reader.GetInt32(0);
             }
-            Connection.Close();
+            connection.Close();
 
-            return IdSubject;
+            return idSubject;
         }
         //SetAge -> calcular edad
     }
