@@ -8,9 +8,9 @@ namespace StudentManager.Interfaces
 {
     internal interface IProfessor
     {
-        List<string> Courses { get; set; }
+        List<string> courses { get; set; }
 
-        void ShowGrade(string StringConnection, int GradeNumber);
-        void PutNotes(string StringConnection, int Ndocument, int Note, string Subject); //Grabar en DB las notas
+        void ShowGrade(string stringConnection, int gradeNumber);
+        void PutNotes(string stringConnection, int nDocument, int note, string subject); //Grabar en DB las notas
     }
 }

@@ -5,35 +5,35 @@ namespace StudentManager.Models
 {
     internal class Director : User
     {
-        public void OpenSemester(Session Session)
+        public void OpenSemester(Session session)
         {
-            Session.StartSemester();
+            session.StartSemester();
         }
 
-        public void CloseSemester(Session Session)
+        public void CloseSemester(Session session)
         {
-            Session.EndSemester();
+            session.EndSemester();
         }
 
-        private int SearchProfessor(int Ndocument)
+        private int SearchProfessor(int nDocument)
         {
             int claveProfessor = 0;
 
-            NpgsqlConnection Connection = new NpgsqlConnection();
+            NpgsqlConnection connection = new NpgsqlConnection();
             string query = "SELECT id_user, b_adult FROM users " +
                             "WHERE n_document = @document" +
                             "AND b_adult = true";
 
-            NpgsqlCommand Command = new NpgsqlCommand(query, Connection);
-            Command.Parameters.AddWithValue("@document", Ndocument);
+            NpgsqlCommand command = new NpgsqlCommand(query, connection);
+            command.Parameters.AddWithValue("@document", nDocument);
 
-            var Reader = Command.ExecuteReader();
+            var reader = command.ExecuteReader();
 
-            while (Reader.Read())
+            while (reader.Read())
             {
-                claveProfessor = Reader.GetInt32(0);
+                claveProfessor = reader.GetInt32(0);
             }
-            Connection.Close();
+            connection.Close();
 
             if (claveProfessor == 0)
             {
@@ -49,18 +49,18 @@ namespace StudentManager.Models
             }
 
         }
-        public void SaveProfessor(string StringConnection, User User)
+        public void SaveProfessor(string stringConnection, User User)
         {
             int DbProfessor = SearchProfessor(User.Document);
-            NpgsqlConnection Connection = new NpgsqlConnection(StringConnection); //TODO
+            NpgsqlConnection connection = new NpgsqlConnection(stringConnection); //TODO
             string query = "INSERT INTO professor(n_user, n_course, n_subject) " +
                             "VALUES(@n_user, @n_course, @n_subject)";
 
-            NpgsqlCommand Command = new NpgsqlCommand(query, Connection);
+            NpgsqlCommand command = new NpgsqlCommand(query, connection);
 
-            Command.Parameters.AddWithValue("@n_user", DbProfessor);
-            Command.Parameters.AddWithValue("@n_course"); //TODO:ID_COURSE);
-            Command.Parameters.AddWithValue("@n_subject"); //TODO: ID_SUBJECT   
+            command.Parameters.AddWithValue("@n_user", DbProfessor);
+            command.Parameters.AddWithValue("@n_course"); //TODO:ID_COURSE);
+            command.Parameters.AddWithValue("@n_subject"); //TODO: ID_SUBJECT   
 
 
         }
