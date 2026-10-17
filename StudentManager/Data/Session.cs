@@ -5,8 +5,8 @@ namespace StudentManager.Data
 {
     internal class Session
     {
-        private bool semester = false;
-        public string MainMenu(string stringconnection)
+        private bool _semester = false;
+        public string MainMenu(string stringConnection)
         {
             Console.WriteLine("BIENVENIDO AL CAMPUS ACADÉMICO");
             Console.WriteLine("| Ingreso al campus  - Menú principal|");
@@ -20,15 +20,15 @@ namespace StudentManager.Data
             return userChoice;
         }
 
-        public User? LogInValidation(string stringconnection, int nDocument, string sPassword)
+        public User? LogInValidation(string stringConnection, int document, string password)
         {
-            NpgsqlConnection connection = new NpgsqlConnection(stringconnection);
+            NpgsqlConnection connection = new NpgsqlConnection(stringConnection);
 
             string query = "SELECT * FROM users WHERE n_document = @document AND s_password = @password";
 
             NpgsqlCommand command = new NpgsqlCommand(query, connection);
-            command.Parameters.AddWithValue("@document", nDocument);
-            command.Parameters.AddWithValue("@password", sPassword);
+            command.Parameters.AddWithValue("@document", document);
+            command.Parameters.AddWithValue("@password", password);
             connection.Open();
 
             NpgsqlDataReader dataReader = command.ExecuteReader();
@@ -37,38 +37,38 @@ namespace StudentManager.Data
             {
                 if (dataReader.GetBoolean(2))
                 {
-                    Professor Professor = new Professor();
-                    Professor.Name = dataReader.GetString(1);
-                    Professor.Document = dataReader.GetInt32(3);
-                    Professor.DateOfBirth = dataReader.GetFieldValue<DateOnly>(6);
-                    Professor.Role = "Teacher";
-                    Professor.Password = sPassword;
+                    Professor professor = new Professor();
+                    professor.Name = dataReader.GetString(1);
+                    professor.Document = dataReader.GetInt32(3);
+                    professor.DateOfBirth = dataReader.GetFieldValue<DateOnly>(6);
+                    professor.Role = "Teacher";
+                    professor.Password = password;
 
                     //dataReader.Close();
                     //connection.Close();
                     Console.WriteLine("Inicio de sesión exitoso.");
-                    Console.WriteLine("Usuario : " + Professor.Name);
-                    Console.WriteLine("Rol: " + Professor.Role);
+                    Console.WriteLine("Usuario : " + professor.Name);
+                    Console.WriteLine("Rol: " + professor.Role);
                     connection.Close();
-                    return Professor;
+                    return professor;
                 }
                 else
                 {
-                    Student Student = new Student();
+                    Student student = new Student();
 
-                    Student.Name = dataReader.GetString(1);
-                    Student.Document = dataReader.GetInt32(3);
-                    Student.DateOfBirth = dataReader.GetFieldValue<DateOnly>(6);
-                    Student.Role = "Student";
-                    Student.Password = sPassword;
+                    student.Name = dataReader.GetString(1);
+                    student.Document = dataReader.GetInt32(3);
+                    student.DateOfBirth = dataReader.GetFieldValue<DateOnly>(6);
+                    student.Role = "Student";
+                    student.Password = password;
 
-                    if (Student.Name != null)
+                    if (student.Name != null)
                     {
                         Console.WriteLine("Inicio de sesión exitoso.");
-                        Console.WriteLine("Usuario : " + Student.Name);
-                        Console.WriteLine("Rol: " + Student.Role);
+                        Console.WriteLine("Usuario : " + student.Name);
+                        Console.WriteLine("Rol: " + student.Role);
                         connection.Close();
-                        return Student;
+                        return student;
                     }
                 }                 
             }
@@ -103,38 +103,38 @@ namespace StudentManager.Data
         }
 
         //Busca el documento en la DB para evitar duplicados
-        public int SignUpValidation(string stringconnection)
+        public int SignUpValidation(string stringConnection)
         {
             Console.WriteLine("Número de documento: ");
-            int nDocument = Convert.ToInt32(Console.ReadLine());
+            int document = Convert.ToInt32(Console.ReadLine());
 
-            NpgsqlConnection connection = new NpgsqlConnection(stringconnection);
+            NpgsqlConnection connection = new NpgsqlConnection(stringConnection);
             string query = "SELECT n_document FROM users WHERE n_document = @document";
 
             NpgsqlCommand command = new NpgsqlCommand(query, connection);
-            command.Parameters.AddWithValue("@document", nDocument);
+            command.Parameters.AddWithValue("@document", document);
             connection.Open();
 
             var dataReader = command.ExecuteReader();
             
             while (dataReader.Read())
             {
-                if (dataReader.GetInt32(0) == nDocument)
+                if (dataReader.GetInt32(0) == document)
                 {
                     Console.WriteLine("El número de documento ingresado ya se encuentra registrado. \n" +
                                         "Por favor ingrese un documento válido.");
 
-                    SignUpValidation(stringconnection);
+                    SignUpValidation(stringConnection);
                 }
             }
             connection.Close();
 
-            return nDocument;
+            return document;
 
         }
 
         //Guarda el usuario en la DB
-        public void SignUpUser(string stringconnection, int nDocument)
+        public void SignUpUser(string stringConnection, int document)
         {
             Console.WriteLine("Nombre completo: ");
             string name = Console.ReadLine();
@@ -146,13 +146,13 @@ namespace StudentManager.Data
             Console.WriteLine("Ingrese su contraseña: ");
             string password = Console.ReadLine();
 
-            NpgsqlConnection connection = new NpgsqlConnection(stringconnection);
+            NpgsqlConnection connection = new NpgsqlConnection(stringConnection);
             string query = "INSERT INTO users(s_name, b_adult, n_document, s_password, s_email, d_dob) " +
                             "VALUES(@Name, @IsAdult, @Document, @Password, @Email, @dob)";
             NpgsqlCommand command = new NpgsqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@Name", name);
-            command.Parameters.AddWithValue("@Document", nDocument);
+            command.Parameters.AddWithValue("@Document", document);
             command.Parameters.AddWithValue("@Password", password);
             command.Parameters.AddWithValue("@Email", email);
             command.Parameters.AddWithValue("@dob", dob);
@@ -169,12 +169,12 @@ namespace StudentManager.Data
 
         public void StartSemester()
         {
-            this.semester = true;
+            this._semester = true;
         }
 
         public void EndSemester()
         {
-            this.semester = false;
+            this._semester = false;
         }
     }
 }
