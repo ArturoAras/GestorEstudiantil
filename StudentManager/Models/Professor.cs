@@ -5,7 +5,7 @@ namespace StudentManager.Models
 {
     internal class Professor : User, IProfessor
     {
-        public List<string> courses { get; set; }
+        public List<string> Courses { get; set; }
 
         public int GetStudent(string stringconnection, int nDocument)
         {
