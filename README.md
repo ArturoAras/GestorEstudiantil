@@ -1,36 +1,56 @@
 # Student Manager
 
-Console application to manage students and staff, built with C# and .NET.
+Console application to manage students and grades, built with C# and .NET.
 
 ## Features
 
-Users can take one of three roles: Director, Professor or Student.
+Implemented:
 
-- **Director:** opens or closes the semester and registers new professors from the list of users.
-- **Professor:** records grades for students and searches their history.
-- **Student:** enrolls in subjects and consults their grade history.
-- All operations are stored in a PostgreSQL database.
+- User registration and login.
+- **Professor:** records grades per student and subject.
+- **Student:** consults their grades.
+- All data is stored in a PostgreSQL database.
+
+Planned: Director role (open and close the semester, register professors), subject enrollment and semester validation.
 
 ## Tech stack
 
 - C#
 - .NET 9.0
 - Npgsql 10.0.3
-- PostgreSQL
+- PostgreSQL 18
 
 ## Getting started
 
 ### Requirements
 
+- Git
 - .NET SDK 9.0
+- PostgreSQL 18
 
+### Database setup
+
+Create the database and load the schema:
+
+```powershell
+psql -U postgres -c "CREATE DATABASE campus_academic_db;"
+psql -U postgres -d campus_academic_db -f database/schema.sql
+```
+
+The connection uses `localhost`, port `5432` and the `postgres` user. The password is read from the `STUDENTMANAGER_DB_PASSWORD` environment variable:
+
+```powershell
+setx STUDENTMANAGER_DB_PASSWORD "your_password"
+```
+
+Open a new terminal after running `setx`, so the variable is available.
 
 ### Run
 
-```bash
-git clone https://github.com/ArturoAras/<repository-name>.git
-cd <StudentManager>
-dotnet run
+```powershell
+git clone https://github.com/ArturoAras/StudentManager.git
+cd StudentManager
+dotnet run --project StudentManager
 ```
 
 ## Status
