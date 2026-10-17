@@ -4,7 +4,6 @@ namespace StudentManager.Models
 {
     internal class Student : User
     {
-        private Dictionary<string, int> subject { get; set; }
 
         public void ShowNotes(string stringConnection)
         {
